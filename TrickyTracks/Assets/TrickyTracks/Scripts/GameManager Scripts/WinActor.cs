@@ -23,7 +23,7 @@ public class WinActor : MonoBehaviour
     private Image podFirst, podSecond, podThird, podFourth;
 
     private Image menuButton;
-    private Text menuText;
+    private Image menuText;
 
     public GameObject newManager;
 
@@ -45,7 +45,7 @@ public class WinActor : MonoBehaviour
         psActor = GetComponent<PlayerSelectActor>();
         RaceUI = GameObject.FindGameObjectWithTag("RaceUI");
         menuButton = GameObject.Find("MenuButton").GetComponent<Image>();
-        menuText = GameObject.Find("MenuText").GetComponent<Text>();
+        menuText = GameObject.Find("MenuText").GetComponent<Image>();
 
         menuButton.enabled = false;
         menuText.enabled = false;
@@ -92,13 +92,13 @@ public class WinActor : MonoBehaviour
                         kartTwo.material = red;
                     }
 
-                    if (lapManager.kart1.gamepad.GetButtonDown("A"))
+                    if (lapManager.kart1.gamepad.GetButtonDown("B"))
                     {
                         SceneManager.LoadScene(0);
                         Instantiate(newManager);
                         GameObject.Destroy(this.gameObject);
                     }
-                    if (lapManager.kart2.gamepad.GetButtonDown("A"))
+                    if (lapManager.kart2.gamepad.GetButtonDown("B"))
                     {
                         SceneManager.LoadScene(0);
                         Instantiate(newManager);
@@ -152,19 +152,19 @@ public class WinActor : MonoBehaviour
                         kartThree.material = red;
                     }
 
-                    if (lapManager.kart1.gamepad.GetButtonDown("A"))
+                    if (lapManager.kart1.gamepad.GetButtonDown("B"))
                     {
                         SceneManager.LoadScene(0);
                         Instantiate(newManager);
                         GameObject.Destroy(this.gameObject);
                     }
-                    if (lapManager.kart2.gamepad.GetButtonDown("A"))
+                    if (lapManager.kart2.gamepad.GetButtonDown("B"))
                     {
                         SceneManager.LoadScene(0);
                         Instantiate(newManager);
                         GameObject.Destroy(this.gameObject);
                     }
-                    if (lapManager.kart3.gamepad.GetButtonDown("A"))
+                    if (lapManager.kart3.gamepad.GetButtonDown("B"))
                     {
                         SceneManager.LoadScene(0);
                         Instantiate(newManager);
@@ -375,25 +375,25 @@ public class WinActor : MonoBehaviour
                         kartOne.material = red;
                     }
 
-                    if (lapManager.kart1.gamepad.GetButtonDown("A"))
+                    if (lapManager.kart1.gamepad.GetButtonDown("B"))
                     {
                         SceneManager.LoadScene(0);
                         Instantiate(newManager);
                         GameObject.Destroy(this.gameObject);
                     }
-                    if (lapManager.kart2.gamepad.GetButtonDown("A"))
+                    if (lapManager.kart2.gamepad.GetButtonDown("B"))
                     {
                         SceneManager.LoadScene(0);
                         Instantiate(newManager);
                         GameObject.Destroy(this.gameObject);
                     }
-                    if (lapManager.kart3.gamepad.GetButtonDown("A"))
+                    if (lapManager.kart3.gamepad.GetButtonDown("B"))
                     {
                         SceneManager.LoadScene(0);
                         Instantiate(newManager);
                         GameObject.Destroy(this.gameObject);
                     }
-                    if (lapManager.kart4.gamepad.GetButtonDown("A"))
+                    if (lapManager.kart4.gamepad.GetButtonDown("B"))
                     {
                         SceneManager.LoadScene(0);
                         Instantiate(newManager);

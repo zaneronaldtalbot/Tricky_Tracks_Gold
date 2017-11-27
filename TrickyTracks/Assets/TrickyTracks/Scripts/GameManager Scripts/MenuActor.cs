@@ -29,9 +29,13 @@ public class MenuActor : MonoBehaviour {
     public Camera menu, credits;
 
     private bool creditsON = false;
+    private bool controlsOn = false;
 
     private Image bbutton;
+    public Image backToMenu;
+    public Image greyDrop;
 
+    public Image Controls;
 
 
     Color y = new Color(1, 0.92f, 0.016f, 1);
@@ -72,6 +76,8 @@ public class MenuActor : MonoBehaviour {
         creditI = creditBTN.GetComponent<Image>();
         controlI = controlBTN.GetComponent<Image>();
         bbutton.enabled = false;
+        backToMenu.enabled = false;
+        Controls.enabled = false;
     }
 
     // Update is called once per frame
@@ -118,7 +124,10 @@ public class MenuActor : MonoBehaviour {
                         GameObject.Destroy(this.gameObject);
                     }
                 }
+
+
                 break;
+
             case 2:
                 coolDown -= Time.deltaTime;
                // optioni.color = y;
@@ -127,7 +136,7 @@ public class MenuActor : MonoBehaviour {
                 creditI.color = Color.grey;
                 controlI.color = y;
 
-                if (!creditsON)
+                if (!creditsON && !controlsOn)
                 {
                     if (gamepad1.GetStick_L().Y > deadZone && coolDown < 0)
                     {
@@ -142,14 +151,38 @@ public class MenuActor : MonoBehaviour {
                         coolDown = cdCopy;
                     }
 
-                    if (gamepad1.GetButtonDown("Start"))
+                    if (!controlsOn)
                     {
-
+                        if (gamepad1.GetButtonDown("A") || gamepad1.GetButtonDown("Start"))
+                        {
+                            playButton.SetActive(false);
+                            exitButton.SetActive(false);
+                            controlBTN.SetActive(false);
+                            creditBTN.SetActive(false);
+                            title.SetActive(false);
+                            Controls.enabled = true;
+                            bbutton.enabled = true;
+                            backToMenu.enabled = true;
+                            controlsOn = true;
+                            greyDrop.enabled = true;
+                        }
                     }
+                }
 
-                    if (gamepad1.GetButtonDown("A"))
+                if(controlsOn)
+                {
+                    if (gamepad1.GetButtonDown("B"))
                     {
-
+                        Controls.enabled = false;
+                        controlsOn = false;
+                        backToMenu.enabled = false;
+                        bbutton.enabled = false;
+                        playButton.SetActive(true);
+                        exitButton.SetActive(true);
+                        controlBTN.SetActive(true);
+                        creditBTN.SetActive(true);
+                        title.SetActive(true);
+                        greyDrop.enabled = false;
                     }
                 }
                 break;
@@ -160,7 +193,7 @@ public class MenuActor : MonoBehaviour {
                 creditI.color = y;
                 controlI.color = Color.grey;
 
-                if (!creditsON)
+                if (!creditsON && !controlsOn)
                 {
                     if (gamepad1.GetStick_L().Y > deadZone && coolDown < 0)
                     {
@@ -184,6 +217,7 @@ public class MenuActor : MonoBehaviour {
                         creditBTN.SetActive(false);
                         title.SetActive(false);
                         bbutton.enabled = true;
+                        backToMenu.enabled = true;
                         creditsON = true;
                     }
                 }
@@ -200,6 +234,7 @@ public class MenuActor : MonoBehaviour {
                             controlBTN.SetActive(true);
                             creditBTN.SetActive(true);
                             title.SetActive(true);
+                               backToMenu.enabled = false;
                               bbutton.enabled = false;
                         }
                     }

@@ -76,6 +76,8 @@ public class LapsManager : MonoBehaviour
 
     public GameObject FinishLine;
 
+    private AudioSource engineRevving;
+
     [HideInInspector]
     public int lapNumber = 0;
     void Start()
@@ -142,10 +144,11 @@ public class LapsManager : MonoBehaviour
         firstPlace = GameObject.Find("firstPlace").GetComponent<Image>();
         secondPlace = GameObject.Find("secondPlace").GetComponent<Image>();
 
-        countDown1 = countOne.GetComponent<AudioSource>();
-        countDown2 = countTwo.GetComponent<AudioSource>();
-        countDown3 = countThree.GetComponent<AudioSource>();
-        countDownEnd = countFour.GetComponent<AudioSource>();
+        countDown1 = GameObject.Find("CountOneSound").GetComponent<AudioSource>();
+        countDown2 = GameObject.Find("CountOneSound").GetComponent<AudioSource>();
+        countDown3 = GameObject.Find("CountOneSound").GetComponent<AudioSource>();
+        countDownEnd = GameObject.Find("CountEndSound").GetComponent<AudioSource>();
+        engineRevving = GameObject.Find("StartRevSound").GetComponent<AudioSource>();
 
         switch(psActor.playerCount)
         {
@@ -176,7 +179,7 @@ public class LapsManager : MonoBehaviour
         secondPlace.enabled = false;
         thirdPlace.enabled = false;
         fourthPlace.enabled = false;
-
+        engineRevving.Play();
     }
 
     private void Update()
@@ -194,6 +197,7 @@ public class LapsManager : MonoBehaviour
             if(!countDown1.isPlaying)
             countDown1.Play();
             countOne.sprite = greenLight;
+     
         }
         if(raceCountdownTimer <  2 && raceCountdownTimer > 1)
         {
@@ -226,6 +230,11 @@ public class LapsManager : MonoBehaviour
             countThree.enabled = false;
             countTwo.enabled = false;
             countOne.enabled = false;
+
+        }
+        if(raceCountdownTimer < -1.5f)
+        {
+            engineRevving.Stop();
         }
 
 

@@ -7,10 +7,13 @@ using UnityEngine;
 public class MineActor : MonoBehaviour {
 
     private PlayerActor kart;
+    private AudioSource mineBeep;
+    private AudioSource crash;
 
 	// Use this for initialization
 	void Start () {
-        
+        mineBeep = GameObject.Find("MineSound").GetComponent<AudioSource>();
+        crash = GameObject.Find("ExplosionSound").GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -23,6 +26,14 @@ public class MineActor : MonoBehaviour {
         if (coll.gameObject.tag == "Player")
         {
             kart = coll.gameObject.GetComponentInParent<PlayerActor>();
+            if(!mineBeep.isPlaying)
+            {
+                mineBeep.Play();
+            }
+            if(!crash.isPlaying)
+            {
+                crash.Play();
+            }
             if (!kart.immuneToDamage)
             {
                 kart.playerDisabled = true;

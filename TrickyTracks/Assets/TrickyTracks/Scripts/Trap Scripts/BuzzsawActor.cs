@@ -12,11 +12,17 @@ public class BuzzsawActor : MonoBehaviour
     public MeshCollider bladeCollider;
     private PrefabDisabledActor disableActor;
 
+    private AudioSource buzzsaw;
+
+    private GameObject[] players;
+
+    private float coolDown = 5.0f;
     private int counter = 3;
     public float sawSpeed = 3.0f;
     public float bladeSpinSpeed = 500.0f;
     private bool goLeft = true;
     private bool goRight = false;
+
     // Use this for initialization
     void Start()
     {
@@ -24,12 +30,31 @@ public class BuzzsawActor : MonoBehaviour
         bladeRender = sawBlade.GetComponentInChildren<MeshRenderer>();
       //  bladeCollider = sawBlade.GetComponentInChildren<MeshCollider>();
         disableActor = sawBlade.GetComponentInParent<PrefabDisabledActor>();
+        buzzsaw = GameObject.Find("BuzzsawSound").GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        coolDown -= Time.deltaTime;
+        players = GameObject.FindGameObjectsWithTag("Player");
 
+
+
+        if (coolDown < 0)
+        {
+            foreach (GameObject obj in players)
+            {
+                if (Vector3.Distance(obj.transform.position, this.gameObject.transform.position) < 10)
+                {
+                    if (!buzzsaw.isPlaying)
+                    {
+                        buzzsaw.Play();
+                    }
+                }
+            }
+        }
+       
         //  sawBlade.transform.Rotate(5 * Time.deltaTime, 0, 0);
         if (counter < 1)
         {

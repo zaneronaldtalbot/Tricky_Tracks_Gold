@@ -36,6 +36,9 @@ public class PlayerActor : MonoBehaviour {
 
     public Renderer kartMat;
 
+    private AudioSource idleEngine, engineAccelerate, kartCrash, gasLeak;
+    private AudioSource topEngineSpeed, explosion;
+
     //Public lap related varaibles.
     [HideInInspector]
     public GameObject lastCheckPoint;
@@ -165,6 +168,12 @@ public class PlayerActor : MonoBehaviour {
         pauseContinue = GameObject.Find("PauseUIContinue").GetComponent<Image>();
         pauseMenu = GameObject.Find("PauseUIMainMenu").GetComponent<Image>();
 
+        idleEngine = GameObject.Find("EngineIdleSound").GetComponent<AudioSource>();
+        kartCrash = GameObject.Find("CrashSound").GetComponent<AudioSource>();
+        gasLeak = GameObject.Find("GasSound").GetComponent<AudioSource>();
+        topEngineSpeed = GameObject.Find("TopSpeedSound").GetComponent<AudioSource>();
+        explosion = GameObject.Find("ExplosionSound").GetComponent<AudioSource>();
+
         for (int i = 1; i <= GamePadManager.Instance.ConnectedTotal(); ++ i)
         {
             xbox_gamepad temppad = GamePadManager.Instance.GetGamePad(i);
@@ -231,6 +240,36 @@ public class PlayerActor : MonoBehaviour {
             smoke2.Stop();
         }
         
+        if(!gamepad.GetTriggerDown_L() && !gamepad.GetTriggerDown_R())
+        {
+            if(!idleEngine.isPlaying)
+            {
+                idleEngine.Play();
+            }
+        }
+        if(gamepad.GetTriggerDown_L() || gamepad.GetTriggerDown_R())
+        {
+       //     if(!engineAccelerate.isPlaying)
+       //     {
+         //       engineAccelerate.Play();
+         //   }
+        }
+
+        if(kart.physicsBody.velocity.sqrMagnitude > 800)
+        {
+            if (idleEngine.isPlaying)
+            {
+                idleEngine.Stop();
+            }
+            
+            if(!topEngineSpeed.isPlaying)
+            {
+                topEngineSpeed.Play();
+            }
+        }
+        Debug.Log(kart.physicsBody.velocity.sqrMagnitude);
+
+
 
         if(gamepad.GetButtonDown("Y"))
         {
@@ -299,7 +338,8 @@ public class PlayerActor : MonoBehaviour {
                     npcManager.enabled = false;
                 }
             }
-            if(buttonIndex == 2)
+
+            if (buttonIndex == 2)
             {
                 if (gamepad.GetStick_L().Y > deadZone && coolDown < 0)
                 {
@@ -347,9 +387,14 @@ public class PlayerActor : MonoBehaviour {
         if (boostPlayer)
         {
             kart.SpeedBoost(boostPower, boostTime, 3.0f, 1.0f);
-            boostPlayer = false;
+            if (!gasLeak.isPlaying)
+            {
+                gasLeak.Play();
+            }
+                boostPlayer = false;
         }
 
+        
 
         if (hitSlick)
            {
@@ -388,7 +433,10 @@ public class PlayerActor : MonoBehaviour {
             deathParticles.Play();
             tempVector = deathParticles.transform.position;
             //Freeze rigidbody, disable mesh, reset velocity, move kart slightly back and up.
-           
+           if(!explosion.isPlaying)
+            {
+                explosion.Play();
+            }
 
             disabledTimer += Time.deltaTime;
             kartBody.velocity = new Vector3();
@@ -562,6 +610,8 @@ public class PlayerActor : MonoBehaviour {
 
     void OnTriggerEnter(Collider coll)
     {
+       
+
         //If they fall off the map and hit the killbox reset their position to the last checkpoint.
         if (coll.gameObject.tag == "Respawn")
         {
@@ -837,7 +887,10 @@ public class PlayerActor : MonoBehaviour {
             GameObject.Destroy(coll.gameObject.transform.parent.gameObject);
             if (!immuneToDamage)
             {
-                
+                if (!kartCrash)
+                {
+                    kartCrash.Play();
+                }
                 playerDisabled = true;
             }
         }
@@ -848,6 +901,14 @@ public class PlayerActor : MonoBehaviour {
             this.transform.position = lastCheckPoint.transform.position;
             playerDisabled = true;
 
+        }
+
+        if(coll.gameObject.tag == "Player" || coll.gameObject.tag == "Item")
+        {
+            if (!kartCrash)
+            {
+                kartCrash.Play();
+            }
         }
 
     }

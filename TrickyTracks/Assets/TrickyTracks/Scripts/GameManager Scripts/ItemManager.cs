@@ -35,6 +35,8 @@ public class ItemManager : MonoBehaviour {
     //PsActor.
     private PlayerSelectActor psActor;
 
+    private AudioSource fireRocket;
+
     // Use this for initialization
     void Start() {
         //Grab an instance of the manager.
@@ -42,6 +44,7 @@ public class ItemManager : MonoBehaviour {
         gpmanager = manager.GetComponent<GamePadManager>();
         rocketActor = Rocket.GetComponentInChildren<RocketActor>();
         psActor = manager.GetComponent<PlayerSelectActor>();
+        fireRocket = GameObject.Find("RocketSound").GetComponent<AudioSource>();
 
     }
     float timer1 = 0.0f;
@@ -155,6 +158,8 @@ public class ItemManager : MonoBehaviour {
         if (wc_kart.itemRPG)
         {
                 rocketFired = true;
+            if(!fireRocket.isPlaying)
+            fireRocket.Play();
                 tempRocket = Instantiate(Rocket, go_kart.transform.position + (go_kart.transform.forward * 5), (go_kart.transform.rotation)) as GameObject;
                 wc_kart.itemRPG = false;
         }
